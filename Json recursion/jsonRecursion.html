@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+ul{
+	color:green;
+}
+ol{
+	color:blue;
+}
+ul:hover{
+	color:blue;
+}
+ol:hover{
+	color:green;
+}
+
+</style>
+</head>
+<body id="b1">
+<p>Frontend essentials</p>
+<ul>
+	<li>HTML</li>
+	<li>CSS</li>
+	<li>Javascript</li>
+</ul>
+<ol>
+	<li>HTML</li>
+	<li>CSS</li>
+	<li>Javascript</li>
+</ol>
+</body>
+
+<script>
+
+
+
+var input = [
+     {
+          "id": 1,
+          "title": "Title 1",
+          "childrens": [
+               {
+                    "id": 2,
+                    "title": "Title 2",
+                    "childrens": []
+               }
+          ]
+     },
+     {
+          "id": 3,
+          "title": "Title 3",
+          "childrens": [
+               {
+                    "id": 4,
+                    "title": "Title 4",
+                    "childrens": [
+                         {
+                              "id": 5,
+                              "title": "Title 5",
+                              "childrens": []
+                         }
+                    ]
+               }
+          ]
+     }
+];
+
+
+var output =[];
+
+function objPuller(data){
+	
+	var obj={};
+
+	data.forEach((elm)=>{
+		obj["id"] = elm.id;
+		obj["title"] = elm.title;
+		obj["childrens"] = [];
+		output.push(obj);
+		obj ={};
+		objPuller(elm.childrens);
+
+	});
+	return output;
+}
+
+console.log(objPuller(input));
+
+</script>
+
+</html>

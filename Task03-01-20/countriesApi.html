@@ -43,9 +43,11 @@ var request = new XMLHttpRequest();
 request.open('GET', "https://restcountries.eu/rest/v2/all");
 request.send();
 
+var data;
+
 request.onload = function(){
 
-	var data = JSON.parse(this.response);
+	data = JSON.parse(this.response);
 	data.forEach(country => { 
 
 				  if(countries.indexOf(country.name) !== -1)

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+<style>
+div
+{
+	border:1px solid black;
+	
+	height:40px;
+}
+
+.container{
+	border-right:none;
+	border-bottom:none;
+}
+
+</style>
+</head>
+<body>
+<h1>Sudoku</h1>
+</body>
+
+<script>
+
+var board = [[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],
+	     [[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],
+             [[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]]];
+
+var pos3x3;
+var posRow;
+var pos;
+var rowRule ={};
+var colRule ={};
+
+
+function positionGenerator(){
+	pos3x3 = Math.floor(Math.random()*100%9);
+	posRow = Math.floor(Math.random()*100%3); 
+	pos = Math.floor(Math.random()*100%3);
+}
+
+function boxNumGenerator(){
+	var n = Math.floor(Math.random()*100%10);
+	var num = (n === 0)? 1: n;
+	return num;
+}
+
+function numberSetter(){
+	positionGenerator();
+	var num = boxNumGenerator();
+	if(check3x3(num) == -1){
+		numberSetter();
+	}
+	else{
+		var spot = board[pos3x3][posRow][pos];
+		if(spot == 0){
+			if(checkRow(num) == -1){
+				numberSetter();
+			}
+			else{
+				if(checkCol(num) == -1){
+					numberSetter();
+				}
+				else{
+					board[pos3x3][posRow][pos] = num;
+				}
+			}
+		}
+		else{
+			numberSetter();
+		}
+	}
+}
+
+function check3x3(n){
+	for(i=0; i<3; i++){
+		for(j=0; j<3; j++){
+			
+			if(board[pos3x3][i][j] == n){
+				return -1;
+			}
+			
+		}
+	}
+	return 1;
+}
+
+function checkRow(n){
+
+	var rowStart = rowRule[pos3x3];
+	var rowEnd = rowStart +2;
+	for(i= rowStart; i<=rowEnd; i++){
+		for(j=0; j<3; j++){
+			var genPos = "board["+pos3x3+"]"+"["+posRow+"]"+"["+pos+"]";
+			var curPos = "board["+i+"]"+"["+posRow+"]"+"["+j+"]";
+			if(genPos != curPos){
+				if(board[i][posRow][j] == n){
+					return -1;
+				}
+			}
+		}
+	}
+	return 1;
+}
+
+function checkCol(n){
+
+	var rowStart = colRule[pos3x3];
+	for(i=rowStart; i<board.length; i+=3){
+		for(j=0; j<3; j++){
+			var genPos = "board["+pos3x3+"]"+"["+posRow+"]"+"["+pos+"]";
+			var curPos = "board["+i+"]"+"["+j+"]"+"["+pos+"]";
+			if(genPos != curPos){
+				if(board[i][j][pos] == n){
+					return -1;
+				}
+			}
+			
+		}
+	}
+	return 1;
+	
+}
+
+function ruleSetter(){
+	rowRule[1] = 0;
+	rowRule[2] = 0;
+	rowRule[0] = 0;
+	rowRule[4] = 3;
+	rowRule[5] = 3;
+	rowRule[3] = 3;
+	rowRule[7] = 6;
+	rowRule[8] = 6;
+	rowRule[6] = 6;
+
+	colRule[0] = 0;
+	colRule[3] = 0;
+	colRule[6] = 0;
+	colRule[1] = 1;
+	colRule[4] = 1;
+	colRule[7] = 1;
+	colRule[2] = 2;
+	colRule[5] = 2;
+	colRule[8] = 2;
+}
+
+function numberOfCall(){
+
+	var randomNum = Math.floor(Math.random()*100%26);
+	var times =  (randomNum < 10)? randomNum +10 : randomNum;
+	for(l=1; l<=times; l++){
+		numberSetter();
+		if(l == times){
+			createBoard();
+		}
+	}
+}
+
+var mainDiv;
+function createBoard(){
+	for(i=0; i<9; i++){
+		mainDiv = document.createElement("div");
+		mainDiv.id = i
+		//mainDiv.style.backgroundColor = color
+		//mainDiv.style.width = '150px'
+		mainDiv.style.height = '95px'
+		mainDiv.style.display = 'inline-block'
+		mainDiv.classList.add("container")
+		mainDiv.style.verticalAlign='top';
+		document.body.appendChild(mainDiv);
+
+		for(k=0; k<3; k++){
+			for(j=0; j<3; j++){
+				
+				createBox(i.toString(),board[i][k][j]);
+			}
+		let br = document.createElement('br');
+       		mainDiv.appendChild(br);
+		}
+		if(i == 2 || i == 5 || i == 8){
+			let brm = document.createElement('br');
+       			document.body.appendChild(brm);
+		}
+	}
+}
+
+function createBox(boxId,elmData){
+ 	let div = document.createElement('div');
+	//div.id = id
+	//div.style.backgroundColor = color
+	//div.classList.add("mydiv");
+	div.style.width = "30px";
+	//div.style.padding = "5px";
+	div.style.height = '30px';
+	div.innerHTML = (elmData>0)? elmData:" ";
+	div.style.display = 'inline-block';
+        div.style.verticalAlign='top';
+	var mainDiv = document.getElementById(boxId);
+	mainDiv.appendChild(div);
+}
+
+ruleSetter();
+numberOfCall()
+</script>
+
+</html>

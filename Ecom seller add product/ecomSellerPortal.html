@@ -1,0 +1,165 @@
+<html>
+<head>
+<style>
+.lbl{
+	margin-right:10px;
+}
+form{
+	margin:0px;
+}
+</style>
+</head>
+<body>
+
+<div id="main">
+<label id="pName" for="productName">Product Name</label> <input type="text" id="PrdNm"/><br>
+<label id="pPrice" for="basePrice">Base Price</label> <input type="text" id="BsePrc"/><br>
+<label id="pDesc" for="description">Description</label> <input type="text" id="PrdDes"/><br>
+<button id="addVar">Add Varient</button><br>
+<button id="submitVar">Generate Varient Fields</button>
+</div>
+<div id="dynamic">
+<div id="addVarient">
+</div>
+</div>
+
+</body>
+<script>
+
+document.getElementById("addVar").addEventListener("click", addVarient);
+document.getElementById("submitVar").addEventListener("click", generateVarient);
+
+var data = [];
+var result =[];
+var index = 1;
+var varients =[];
+var varientDetails =[];
+var arrObj =[];
+
+function addVarient(){
+	var form = document.createElement("form");
+	var varientName = document.createElement("input");
+	var varientField = document.createElement("input");
+	//var br = document.createElement("br");
+	form.appendChild(varientName);
+	form.appendChild(varientField);
+	document.getElementById("addVarient").appendChild(form);
+	//document.getElementById("addVarient").appendChild(br);
+}
+
+function generateVarient(){
+	var docForms = document.forms;
+	for(i=0; i<docForms.length; i++){
+		var obj ={};
+		for(j=0; j<docForms[i].elements.length; j++){
+			var value = docForms[i].elements[j].value;
+			if(j == 0){
+				obj["type"]=value;
+			}else{
+				var valueArr = value.split(",");
+				obj["values"]= valueArr;
+			}
+		}
+		varients.push(obj);
+	}
+
+	for(i=0; i<varients.length; i++){
+		data.push(varients[i].values);
+	}
+
+	//console.log(varients);
+	createVarientFields(createCombos(data));
+}
+
+function createCombos(data){
+	var arr = data.slice(index);
+	
+
+	for(i=0; i<data[0].length; i++){
+		for(j=0; j<arr[0].length; j++){
+    			result.push(data[0][i]+"/ "+arr[0][j]);
+    		}
+	}
+
+	data[0]= result.slice(0,result.length);
+	result =[];
+	index +=1;
+
+	if(arr.length > 1){
+		createCombos(data);
+	}
+//console.log("combos "+data[0]);
+arr = [];
+return(data[0]);
+}
+
+function createVarientFields(arr){
+
+	for(i=0; i<arr.length; i++){
+		var form = document.createElement("form");
+		form.id = "frm"+i;
+		var label = document.createElement("label");
+		label.setAttribute("class","lbl");
+		label.innerHTML = arr[i]+":";
+		var labelPrice = document.createElement("label");
+		labelPrice.innerHTML = "Price";
+		var price = document.createElement("input");
+		var br = document.createElement("br");
+		form.appendChild(label);
+		form.appendChild(labelPrice);
+		form.appendChild(price);
+		document.getElementById("dynamic").appendChild(form);
+		document.getElementById("dynamic").appendChild(br);
+	}
+	
+	var btn = document.createElement("button");
+	btn.addEventListener("click",function(){ generateVarientDetails(data[0])});
+	btn.innerHTML="Add";
+	document.getElementById("dynamic").appendChild(btn);
+	//generateVarientDetails(data[0]);
+	
+}
+
+function generateVarientDetails(varientArr){
+
+	//var varientArr = data[0];
+	for(i=0; i<varientArr.length; i++){
+		var arr = varientArr[i].split("/ ");
+		var obj ={};
+		for(j=0; j<arr.length; j++){
+			obj[varients[j].type] = arr[j];
+		}
+		var formElm = document.getElementById("frm"+i).elements[0];
+		obj["addOnprice"] = ( isNaN(parseInt(formElm.value)) ) ? 0 : parseInt(formElm.value);
+		varientDetails.push(obj);
+	}
+	//console.log(varientDetails);
+	var obj ={};
+	obj[document.getElementById("pName").htmlFor] = document.getElementById("PrdNm").value;
+	obj[document.getElementById("pPrice").htmlFor] = document.getElementById("BsePrc").value;
+	obj[document.getElementById("pDesc").htmlFor] = document.getElementById("PrdDes").value;
+	obj["varients"] = varients;
+	obj["varientDetails"] = varientDetails;
+	arrObj.push(obj);
+	console.log(arrObj);
+	reset();
+}
+
+function reset(){
+
+	document.getElementById("addVarient").innerHTML="";
+	document.getElementById("dynamic").innerHTML="";
+	var dynamic = document.createElement("div");
+	dynamic.id ="dynamic";
+	var addVar = document.createElement("div");
+	addVar.id ="addVarient";
+	dynamic.appendChild(addVar);
+	document.body.appendChild(dynamic);
+	data = [];
+	result =[];
+	index = 1;
+	varients =[];
+	varientDetails =[];
+}
+</script>
+</html>

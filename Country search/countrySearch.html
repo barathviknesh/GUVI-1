@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+
+.displayBox{
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:space-around;
+}
+
+.card{
+	width: 18rem;
+}
+
+input{
+	margin-bottom:10px;
+}
+
+</style>
+</head>
+<body >
+
+<div class="container">
+	
+	<div class="row">
+	   <div class="col" align="center" id="search">
+		<h2>Country and its Flag</h2><br>
+	   </div>
+	</div>
+
+	<div class="row">
+		<div id="main" class="displayBox">
+		</div>
+		
+	</div>
+
+</div>
+</body>
+
+<script>
+
+var textBox = document.createElement("input");
+textBox.onkeyup =countrySearch;
+var div = document.getElementById("search");
+div.appendChild(textBox);
+
+
+var data;
+
+document.body.onload = initialLoad;
+
+function initialLoad(){
+
+	fetch("https://restcountries.eu/rest/v2/all").then((response) => {
+
+	
+	return response.json();}).then((arr) => {
+	
+	data = arr.slice(0,arr.length);
+	data.forEach(country => { 
+
+				  
+						const card = document.createElement('div');
+      						card.setAttribute('class', 'card');
+		
+						const cardBody = document.createElement('div');
+						cardBody.setAttribute('class','card-body');
+
+      						const countryName = document.createElement('h1');
+						countryName.setAttribute('class','card-title');
+      						countryName.textContent = country.name;
+					
+						const desp = document.createElement('p');
+						desp.setAttribute('class','card-text');
+						desp.innerHTML = "Capital: "+country.capital+"<br>"+"Region: "+country.region+"<br>"+"Population: "+country.population;
+
+						const flag = document.createElement('img');
+						flag.setAttribute("class","card-img-top");
+						flag.src = country.flag;
+						
+      						card.appendChild(flag);
+						cardBody.appendChild(countryName);
+						cardBody.appendChild(desp);
+
+						card.appendChild(cardBody);
+						const dispBox = document.getElementById("main");
+						dispBox.appendChild(card);
+				  
+				});
+
+});
+
+}
+
+function countrySearch(){
+	
+
+	if(this.value != ""){
+		
+	
+		fetch(`https://restcountries.eu/rest/v2/name/${this.value}`).then((response) => {
+
+		if(document.getElementById("main").firstChild != null){
+
+			document.getElementById("main").innerHTML ="";
+		}
+		return response.json();}).then((arr) => {
+		arr.forEach(country => { 
+
+				  
+						const card = document.createElement('div');
+      						card.setAttribute('class', 'card');
+		
+						const cardBody = document.createElement('div');
+						cardBody.setAttribute('class','card-body');
+
+      						const countryName = document.createElement('h1');
+						countryName.setAttribute('class','card-title');
+      						countryName.textContent = country.name;
+					
+						const desp = document.createElement('p');
+						desp.setAttribute('class','card-text');
+						desp.innerHTML = "Capital: "+country.capital+"<br>"+"Region: "+country.region+"<br>"+"Population: "+country.population;
+
+						const flag = document.createElement('img');
+						flag.setAttribute("class","card-img-top");
+						flag.src = country.flag;
+						
+      						card.appendChild(flag);
+						cardBody.appendChild(countryName);
+						cardBody.appendChild(desp);
+
+						card.appendChild(cardBody);
+						const dispBox = document.getElementById("main");
+						dispBox.appendChild(card);
+				  
+				});
+
+
+
+		});
+	}else{
+
+			initialLoad();
+
+	}
+
+}
+
+</script>
+
+</html>

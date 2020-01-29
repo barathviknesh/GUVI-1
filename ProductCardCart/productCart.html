@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+.displayBox{
+	display:flex;
+	justify-content:space-around;
+}
+
+.card{
+	width: 18rem;
+}
+
+span{
+	margin-right:5px;
+}
+
+.key{
+	color:blue;
+}
+
+.prdName{
+	padding:3px;
+	margin-right: 20px;
+	color:red;
+}
+
+.price{
+	padding:3px;
+	margin-left: 30px;
+	color:black;
+}
+</style>
+</head>
+<body id="b1">
+<div class="container">
+	
+	<div class="row">
+	   <div class="col" align="center">
+		<h2></h2><br>
+	   </div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			<div id="main" class="displayBox">
+			</div>
+		</div>
+		<div class="col" id="cart">
+			Cart
+		</div>
+		
+	</div>
+
+</div>
+</body>
+
+<script>
+var data = [
+     {
+          "productName" : "T-Shirt",
+          "basePrice" : 500,
+          "image" : "http://placehold.it/200x200",
+          "description" : "Quality Material:Premium cotton,touch soft,breathable,comfortable,wrinkle free ;you’ll enjoy this feeling when wear it.",
+          "varients" : [
+               {
+                    "type" : "Size",
+                    "values" : ["xl","xxl"]
+               },
+               {
+                    "type" : "Meterial",
+                    "values" : ["cotton","silk"]
+               },
+               {
+                    "type" : "Color",
+                    "values" : ["yellow","red"]
+               }
+          ],
+          "varientDetails" : [
+               {
+                    "size" : "xl",
+                    "meterial" : "cotton",
+                    "color" : "red",
+                    "addOnprice" : 30
+               },
+               {
+                    "size" : "xl",
+                    "meterial" : "cotton",
+                    "color" : "yellow",
+                    "addOnprice" : 40
+               },
+               {
+                    "size" : "xl",
+                    "meterial" : "silk",
+                    "color" : "red",
+                    "addOnprice" : 50
+               },
+               {
+                    "size" : "xl",
+                    "meterial" : "silk",
+                    "color" : "yellow",
+                    "addOnprice" : 60
+               },
+               {
+                    "size" : "xxl",
+                    "meterial" : "cotton",
+                    "color" : "red",
+                    "addOnprice" : 70
+               },
+               {
+                    "size" : "xxl",
+                    "meterial" : "cotton",
+                    "color" : "yellow",
+                    "addOnprice" : 80
+               },
+               {
+                    "size" : "xxl",
+                    "meterial" : "silk",
+                    "color" : "red",
+                    "addOnprice" : 90
+               },
+               {
+                    "size" : "xxl",
+                    "meterial" : "silk",
+                    "color" : "yellow",
+                    "addOnprice" : 100
+               }
+          ]
+     },
+     {
+          "productName" : "Saree",
+          "basePrice" : 5000,
+          "image" : "http://placehold.it/200x200",
+          "description" : "Quality Material:Premium cotton,touch soft,breathable,comfortable,wrinkle free ;you’ll enjoy this feeling when wear it.",
+          "varients" : [
+               {
+                    "type" : "Meterial",
+                    "values" : ["cotton","silk"]
+               },
+               {
+                    "type" : "Color",
+                    "values" : ["yellow","red"]
+               }
+          ],
+          "varientDetails" : [
+               {
+                    "meterial" : "cotton",
+                    "color" : "red",
+                    "addOnprice" : 30
+               },
+               {
+                    "meterial" : "cotton",
+                    "color" : "yellow",
+                    "addOnprice" : 40
+               },
+               {
+                    "meterial" : "silk",
+                    "color" : "red",
+                    "addOnprice" : 50
+               },
+               {
+                    "meterial" : "silk",
+                    "color" : "yellow",
+                    "addOnprice" : 60
+               }
+          ]
+     }
+];
+var body = document.getElementById("b1");
+body.onload = productDisplay;
+var index = 1;
+var cart = [];
+
+
+function productDisplay(){
+
+	data.forEach((product) => {
+
+		
+		const card = document.createElement('div');
+      		card.setAttribute('class', 'card');
+
+		const cardBody = document.createElement('div');
+		cardBody.setAttribute('class','card-body');
+
+		const productName = document.createElement('h1');
+		productName.setAttribute('class','card-title');
+	  	productName.textContent = product.productName;
+
+		const desp = document.createElement('p');
+		desp.setAttribute('class','card-text');
+		desp.innerHTML += product.description;
+		desp.innerHTML += "<br>";
+		desp.innerHTML += "<br>";
+		desp.innerHTML += product.basePrice;
+
+		
+
+		const img = document.createElement('img');
+		img.setAttribute("class","card-img-top");
+		img.src = product.image;
+
+		card.appendChild(img);
+		cardBody.appendChild(productName);
+		cardBody.appendChild(desp);
+
+		var form = document.createElement("form");
+		form.id = "frm"+index;
+
+		const dropDown = document.createElement("select");
+		for(i=0; i<product.varients.length; i++){
+			const dropDown = document.createElement("select");
+			var varient = product.varients[i].values;
+			for(j=0; j<varient.length; j++){
+				var z = document.createElement("option");
+  				z.setAttribute("value", varient[j]);
+ 				var t = document.createTextNode(varient[j]);
+ 				z.appendChild(t);
+				dropDown.appendChild(z);
+			}
+			form.appendChild(dropDown);
+			cardBody.appendChild(form);
+			
+		}
+		
+		const br = document.createElement("br");
+		cardBody.appendChild(br);
+
+		var btn = document.createElement("button");
+		btn.id = index;
+		btn.setAttribute('class','btn btn-primary');
+		btn.style.marginTop = "10px";
+		btn.innerHTML="Add";
+		btn.onclick = addCart;
+		cardBody.appendChild(btn);
+		
+		index+=1;
+
+
+		card.appendChild(cardBody);
+		const dispBox = document.getElementById("main");
+		dispBox.appendChild(card);
+		
+
+	});
+
+	const br = document.createElement("br");
+	const dispBox = document.getElementById("main");
+	dispBox.appendChild(br);
+
+}
+
+function addCart(){
+	var form = document.getElementById("frm"+this.id);
+	var userVarient =[];
+	var arr =[];
+	var comboArr =[];
+	var tempArr =[];
+	var id = parseInt(this.id);
+	for(i=0; i< form.elements.length; i++){
+		userVarient.push(form.elements[i].value);
+
+	}
+	cart.push(userVarient);
+	tempArr.push(userVarient);
+	//console.log(cart);
+	
+	for(k=0; k<1; k++){
+		for(j=0; j<data[id-1].varientDetails.length; j++){
+			arr = Object.values(data[id-1].varientDetails[j])
+			comboArr.push(arr);
+			arr =[];
+			var currSelect = comboArr[j].slice(0,comboArr[j].length -1);
+			//console.log(len);
+			if(JSON.stringify(tempArr[0]) == JSON.stringify(currSelect)){
+				tempArr =[];
+				var p = document.createElement("p");
+				arrKV = Object.entries(data[id-1].varientDetails[j]);
+				p.innerHTML += "<span class='prdName'>"+data[id-1].productName+"</span>";
+				for(const[key,value] of arrKV){
+				   if(key != "addOnprice"){
+					p.innerHTML += "<span>"+"<span class='key'>"+key+"</span>"+"- "+value+"</span>"; 
+				   }
+				}
+				var addOnPrice = comboArr[j][comboArr[j].length -1];
+				p.innerHTML +="<span class='price'>Price :"+ (data[id-1].basePrice + addOnPrice)+"</span>";
+				p.innerHTML +="<br>";
+				var userCart = document.getElementById("cart");
+				userCart.appendChild(p);
+				//alert("Base price "+comboArr[j][comboArr[j].length -1]);
+				break;
+			}
+		}
+	}
+	userVarient=[];
+}
+
+
+</script>
+
+</html>
