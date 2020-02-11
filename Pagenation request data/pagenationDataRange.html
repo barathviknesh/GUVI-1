@@ -7,8 +7,7 @@
 
 </style>
 </head>
-<body>
-
+<body  id="b1">
 
 </body>
 
@@ -33,7 +32,7 @@ fetch(url).then((response) => { return response.json();}).then((data) =>{
 		
 	arr = data.slice(0,data.length);
 	createTable(data);
-	var page = 20;
+	var page = 14;
 	for(i =1; i<=page; i++){
 		createButton(i.toString());
 	}
@@ -78,8 +77,8 @@ function createTable(data){
  	});
 
 	
-	var id = (isNaN(parseInt(this.id))) ? 1 : parseInt(this.id);
-	var rowEnd = id * 5;
+	//var id = (isNaN(parseInt(this.id))) ? 1 : parseInt(this.id); // always gets 5 elements from api
+	var rowEnd = 1 * 5;
 	var rowStart = rowEnd - 5;
 	
 
@@ -136,7 +135,7 @@ function createTableClick(curr){
  	});
 
 	
-	var id = (isNaN(parseInt(curr.id))) ? 1 : parseInt(curr.id);
+	//var id = (isNaN(parseInt(this.id))) ? 1 : parseInt(this.id); // always gets 5 elements from api
 	var rowEnd = 1 * 5;
 	var rowStart = rowEnd - 5;
 	
