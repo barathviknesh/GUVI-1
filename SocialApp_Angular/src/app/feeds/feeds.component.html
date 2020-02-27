@@ -1,0 +1,22 @@
+
+
+<div class="container">
+    <div class="row ">
+        <div class="col-4 offset-md-4">
+            <form [formGroup]="post" (submit)="postFeed()">
+                <div class="form-group">
+                    <input formControlName="feed" type="text" id="username" tabindex="1" class="form-control" placeholder="Your post goes here" value="">
+                    <input type="submit" value="post">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 offset-md-4">
+            <ul class="list-group">
+                <li class="list-group-item active">Your Feeds</li>
+                <li *ngFor="let feed of feeds" class="list-group-item">{{feed}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

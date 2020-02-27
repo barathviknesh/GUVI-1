@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4 offset-md-4">
+            <form [formGroup]="registerForm" (submit)="userRegister()" id="register-form" style="display: block;">
+                <div class="form-group">
+                    <input type="text" (keyup)="onKey($event)" formControlName="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                </div>
+                {{userName}}
+                <div class="form-group">
+                    <input type="email" formControlName="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                </div>
+                <div class="form-group">
+                    <input type="password" formControlName="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" formControlName="confirmPassword" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                </div>
+                {{registerForm.controls.username.errors | json}}
+                <span >Passwords must match</span>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
